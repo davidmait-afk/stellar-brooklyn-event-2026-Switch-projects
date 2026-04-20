@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The NYC Health Pivot | Stellar Health</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #F26522;
+    --orange-light: #FF8B4A;
+    --orange-pale: #FFF3EC;
+    --cream: #FBF8F4;
+    --card-border: rgba(0,0,0,0.07);
+    --text-dark: #1A1A1A;
+    --text-body: #4A4A4A;
+    --text-muted: #8A8A8A;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Outfit',sans-serif; background:var(--cream); color:var(--text-dark); overflow-x:hidden; -webkit-font-smoothing:antialiased; }
+
+  nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:16px 48px; display:flex; justify-content:space-between; align-items:center; backdrop-filter:blur(20px); background:rgba(251,248,244,0.92); border-bottom:1px solid var(--card-border); }
+  .nav-logo { font-family:'Fraunces',serif; font-size:18px; font-weight:500; color:var(--orange); text-decoration:none; }
+  .nav-right { display:flex; align-items:center; gap:28px; }
+  .nav-link { font-size:13px; font-weight:500; color:var(--text-muted); text-decoration:none; transition:color 0.2s; }
+  .nav-link:hover { color:var(--text-dark); }
+  .nav-cta { padding:10px 22px; background:var(--orange); color:#fff; text-decoration:none; font-size:13px; font-weight:600; border-radius:50px; transition:all 0.2s; }
+  .nav-cta:hover { background:var(--orange-light); transform:translateY(-1px); }
+
+  .hero { min-height:100vh; display:flex; align-items:center; padding:120px 48px 80px; background:linear-gradient(135deg, var(--cream) 0%, #FFF0E6 50%, var(--cream) 100%); position:relative; overflow:hidden; }
+  .hero::before { content:''; position:absolute; top:-15%; right:-8%; width:550px; height:550px; border-radius:50%; background:radial-gradient(circle, rgba(242,101,34,0.07), transparent 70%); pointer-events:none; }
+  .hero-grid { position:relative; z-index:2; display:grid; grid-template-columns:1.1fr 0.9fr; gap:64px; max-width:1200px; margin:0 auto; align-items:center; width:100%; }
+
+  .hero-eyebrow { display:inline-flex; align-items:center; gap:8px; padding:8px 18px; background:#fff; border:1px solid var(--card-border); border-radius:50px; font-size:11px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--orange); margin-bottom:24px; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+  .hero-eyebrow .dot { width:6px; height:6px; border-radius:50%; background:var(--orange); }
+
+  .hero h1 { font-family:'Fraunces',serif; font-size:clamp(36px,4.2vw,58px); font-weight:500; line-height:1.12; color:var(--text-dark); margin-bottom:20px; }
+  .hero h1 em { font-style:italic; color:var(--orange); }
+  .hero-sub-large { font-size:17px; line-height:1.7; color:var(--text-body); max-width:520px; margin-bottom:16px; font-weight:400; }
+  .hero-sub { font-size:15px; line-height:1.75; color:var(--text-body); max-width:520px; margin-bottom:32px; font-weight:300; }
+
+  .hero-meta { display:flex; gap:28px; flex-wrap:wrap; margin-bottom:36px; }
+  .meta-item { display:flex; align-items:center; gap:10px; }
+  .meta-icon { width:36px; height:36px; border-radius:10px; background:#fff; border:1px solid var(--card-border); display:flex; align-items:center; justify-content:center; box-shadow:0 2px 6px rgba(0,0,0,0.04); }
+  .meta-icon svg { width:15px; height:15px; stroke:var(--orange); fill:none; stroke-width:1.8; }
+  .meta-label { font-size:10px; text-transform:uppercase; letter-spacing:1.2px; color:var(--text-muted); font-weight:500; }
+  .meta-value { font-size:14px; color:var(--text-dark); font-weight:500; }
+
+  .hero-cta-row { display:flex; gap:14px; align-items:center; }
+  .btn-primary { display:inline-flex; align-items:center; gap:10px; padding:14px 30px; background:var(--orange); color:#fff; text-decoration:none; font-size:14px; font-weight:600; border-radius:50px; transition:all 0.3s; }
+  .btn-primary:hover { background:var(--orange-light); transform:translateY(-2px); box-shadow:0 12px 28px rgba(242,101,34,0.25); }
+  .btn-primary svg { width:15px; height:15px; }
+  .btn-ghost { padding:14px 24px; background:#fff; color:var(--text-dark); text-decoration:none; font-size:14px; font-weight:500; border-radius:50px; border:1px solid var(--card-border); transition:all 0.3s; }
+  .btn-ghost:hover { border-color:var(--orange); color:var(--orange); }
+
+  .hero-card { background:#fff; border-radius:24px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.06); border:1px solid var(--card-border); }
+  .hero-card-img { width:100%; aspect-ratio:16/9; object-fit:cover; display:block; }
+  .hero-card-body { padding:28px 32px; }
+  .hero-card-label { font-size:10px; text-transform:uppercase; letter-spacing:2px; color:var(--orange); font-weight:700; margin-bottom:10px; }
+  .hero-card-title { font-family:'Fraunces',serif; font-size:20px; color:var(--text-dark); font-weight:500; margin-bottom:10px; }
+  .hero-card-desc { font-size:14px; line-height:1.7; color:var(--text-body); font-weight:300; }
+  .tags { display:flex; gap:8px; flex-wrap:wrap; margin-top:16px; }
+  .tag { padding:5px 14px; background:#fff; border:1px solid var(--card-border); border-radius:20px; font-size:12px; font-weight:500; color:var(--text-body); }
+
+  .featuring-bar { border-top:1px solid var(--card-border); margin-top:40px; padding-top:24px; }
+  .featuring-label { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--orange); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  .featuring-label::before { content:''; width:18px; height:2px; background:var(--orange); }
+  .featuring-orgs { display:flex; gap:0; }
+  .featuring-org { display:flex; align-items:center; gap:10px; padding-right:32px; margin-right:32px; border-right:1px solid var(--card-border); font-size:14px; font-weight:500; color:var(--text-dark); }
+  .featuring-org:last-child { border-right:none; margin-right:0; padding-right:0; }
+  .featuring-org svg { width:16px; height:16px; stroke:var(--orange); fill:none; stroke-width:1.8; }
+
+  .section-white { background:#fff; }
+  .section { padding:96px 48px; max-width:1200px; margin:0 auto; }
+  .section-white-inner { max-width:1200px; margin:0 auto; padding:96px 48px; }
+  .section-label { display:inline-flex; align-items:center; gap:8px; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--orange); margin-bottom:14px; }
+  .section-label::before { content:''; width:18px; height:2px; background:var(--orange); }
+
+  .audience-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-top:48px; }
+  .audience-card { padding:28px 24px; background:#fff; border:1px solid var(--card-border); border-radius:16px; transition:all 0.4s; box-shadow:0 2px 8px rgba(0,0,0,0.03); }
+  .audience-card:hover { transform:translateY(-4px); box-shadow:0 12px 32px rgba(0,0,0,0.08); border-color:var(--orange); }
+  .audience-icon { width:42px; height:42px; border-radius:12px; background:var(--orange-pale); display:flex; align-items:center; justify-content:center; margin-bottom:16px; }
+  .audience-icon svg { width:18px; height:18px; stroke:var(--orange); fill:none; stroke-width:1.8; }
+  .audience-card h3 { font-family:'Fraunces',serif; font-size:17px; font-weight:500; color:var(--text-dark); margin-bottom:6px; }
+  .audience-card p { font-size:13px; line-height:1.6; color:var(--text-body); font-weight:300; }
+
+  .speakers-header { text-align:center; margin-bottom:56px; }
+  .speakers-header h2 { font-family:'Fraunces',serif; font-size:clamp(28px,3vw,40px); font-weight:500; color:var(--text-dark); margin-bottom:10px; }
+  .speakers-header p { font-size:15px; color:var(--text-body); font-weight:300; max-width:520px; margin:0 auto; line-height:1.7; }
+  .speakers-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  .speaker-card { border-radius:20px; overflow:hidden; background:#fff; border:1px solid var(--card-border); transition:all 0.4s; box-shadow:0 4px 16px rgba(0,0,0,0.04); }
+  .speaker-card:hover { transform:translateY(-6px); box-shadow:0 16px 40px rgba(0,0,0,0.1); border-color:var(--orange); }
+  .speaker-photo { width:100%; aspect-ratio:1/1; overflow:hidden; background:#f0ede9; display:flex; align-items:center; justify-content:center; }
+  .speaker-photo img { width:100%; height:100%; object-fit:cover; object-position:center top; transition:transform 0.5s; }
+  .speaker-card:hover .speaker-photo img { transform:scale(1.04); }
+  .speaker-info { padding:22px 24px 24px; }
+  .speaker-badge { display:inline-block; padding:4px 12px; background:var(--orange-pale); border-radius:20px; font-size:10px; font-weight:700; letter-spacing:0.5px; color:#C14E10; margin-bottom:10px; text-transform:uppercase; }
+  .speaker-name { font-family:'Fraunces',serif; font-size:20px; color:var(--text-dark); font-weight:500; margin-bottom:4px; }
+  .speaker-title { font-size:13px; color:var(--text-body); line-height:1.5; font-weight:300; }
+  .speaker-org { color:var(--orange); font-weight:500; }
+
+  .convo-layout { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start; }
+  .convo-left h2 { font-family:'Fraunces',serif; font-size:clamp(26px,3vw,38px); font-weight:500; color:var(--text-dark); margin-bottom:16px; line-height:1.15; }
+  .convo-left h2 em { color:var(--orange); font-style:italic; }
+  .convo-left p { font-size:15px; line-height:1.8; color:var(--text-body); font-weight:300; }
+  .topic { padding:24px; background:#fff; border:1px solid var(--card-border); border-radius:14px; margin-bottom:16px; transition:all 0.3s; box-shadow:0 2px 8px rgba(0,0,0,0.03); }
+  .topic:hover { border-color:var(--orange); transform:translateX(4px); }
+  .topic-num { font-size:11px; font-weight:700; color:var(--orange); letter-spacing:1px; margin-bottom:6px; }
+  .topic h4 { font-family:'Fraunces',serif; font-size:17px; color:var(--text-dark); font-weight:500; margin-bottom:4px; }
+  .topic p { font-size:13px; line-height:1.6; color:var(--text-body); font-weight:300; }
+
+  .evening-header { text-align:center; margin-bottom:56px; }
+  .evening-header h2 { font-family:'Fraunces',serif; font-size:clamp(28px,3vw,40px); font-weight:500; color:var(--text-dark); }
+  .evening-items { max-width:800px; margin:0 auto; display:flex; flex-direction:column; gap:20px; }
+  .evening-item { display:flex; gap:24px; align-items:flex-start; padding:32px; background:#fff; border:1px solid var(--card-border); border-radius:16px; transition:all 0.3s; box-shadow:0 2px 8px rgba(0,0,0,0.03); }
+  .evening-item:hover { border-color:var(--orange); box-shadow:0 8px 24px rgba(0,0,0,0.06); }
+  .evening-num { width:44px; height:44px; border-radius:50%; background:var(--orange); color:#fff; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-family:'Fraunces',serif; font-size:18px; font-weight:600; }
+  .evening-content h3 { font-family:'Fraunces',serif; font-size:19px; color:var(--text-dark); font-weight:500; margin-bottom:6px; }
+  .evening-content p { font-size:14px; line-height:1.7; color:var(--text-body); font-weight:300; }
+
+  .section-cta { padding:96px 48px; text-align:center; }
+  .cta-box { max-width:680px; margin:0 auto; padding:56px 48px; background:var(--orange); border-radius:28px; position:relative; overflow:hidden; }
+  .cta-box::before { content:''; position:absolute; top:-40%; right:-20%; width:300px; height:300px; border-radius:50%; background:rgba(255,255,255,0.1); pointer-events:none; }
+  .cta-box h2 { font-family:'Fraunces',serif; font-size:clamp(24px,3vw,34px); color:#fff; margin-bottom:12px; position:relative; font-weight:500; }
+  .cta-box p { font-size:15px; color:rgba(255,255,255,0.88); margin-bottom:28px; position:relative; font-weight:300; line-height:1.7; max-width:460px; margin-left:auto; margin-right:auto; }
+  .btn-white { display:inline-flex; align-items:center; gap:10px; padding:14px 32px; background:#fff; color:var(--orange); text-decoration:none; font-size:15px; font-weight:600; border-radius:50px; position:relative; transition:all 0.3s; }
+  .btn-white:hover { transform:translateY(-2px); box-shadow:0 12px 28px rgba(0,0,0,0.15); }
+  .btn-white svg { width:15px; height:15px; }
+  .cta-info { display:flex; justify-content:center; gap:32px; margin-top:24px; position:relative; flex-wrap:wrap; }
+  .cta-info-item { font-size:12px; color:rgba(255,255,255,0.7); display:flex; align-items:center; gap:6px; }
+  .cta-info-item svg { width:13px; height:13px; stroke:rgba(255,255,255,0.8); fill:none; stroke-width:1.8; }
+
+  footer { padding:36px 48px; border-top:1px solid var(--card-border); display:flex; justify-content:space-between; align-items:center; max-width:1300px; margin:0 auto; }
+  .footer-brand { font-family:'Fraunces',serif; font-size:17px; font-weight:500; color:var(--orange); }
+  .footer-text { font-size:12px; color:var(--text-muted); }
+  .footer-links { display:flex; gap:20px; }
+  .footer-links a { font-size:12px; color:var(--text-muted); text-decoration:none; }
+  .footer-links a:hover { color:var(--orange); }
+
+  @media(max-width:1024px){.hero-grid{grid-template-columns:1fr;gap:40px}.convo-layout{grid-template-columns:1fr}.speakers-grid{grid-template-columns:1fr 1fr}.audience-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:768px){nav{padding:14px 20px}.hero{padding:100px 20px 60px}.section{padding:64px 20px}.section-white-inner{padding:64px 20px}.section-cta{padding:64px 20px}.speakers-grid{grid-template-columns:1fr;max-width:360px;margin:0 auto}.audience-grid{grid-template-columns:1fr}.cta-info{flex-direction:column;gap:8px;align-items:center}footer{flex-direction:column;gap:14px;text-align:center;padding:28px 20px}.featuring-orgs{flex-direction:column;gap:12px}.featuring-org{border-right:none;padding-right:0;margin-right:0}}
+  html{scroll-behavior:smooth}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo"><img src="https://stellarhealth.com/wp-content/uploads/2020/10/stellarhealth_logo_small-01-PNG-300x50.png" alt="Stellar Health" style="height:28px;width:auto;" onerror="this.outerHTML='<span style=\'font-family:Fraunces,serif;font-size:18px;font-weight:500;color:#F26522\'>Stellar Health</span>'"></a>
+  <div class="nav-right">
+    <a href="#speakers" class="nav-link">Speakers</a>
+    <a href="#evening" class="nav-link">Agenda</a>
+    <a href="https://mail.google.com/mail/?view=cm&to=tess.hurst@stellarhealth.com&su=Stellar+Health%3A+NYC+Healthcare+Pivot+Event" target="_blank" class="nav-cta">RSVP Now</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="hero-eyebrow"><span class="dot"></span> A Stellar Health Event · Brooklyn, NY</div>
+      <p style="font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:var(--orange);font-weight:700;margin-bottom:12px;">The NYC Healthcare Pivot</p>
+      <h1>Policy, Practice,<br>and the <em>Pivot</em></h1>
+      <p class="hero-sub-large">An intimate evening of candid dialogue, peer networking, and a real discussion about the future of healthcare delivery.</p>
+      <p class="hero-sub">A 2026 blueprint for NYC healthcare leaders with national implications. The rules of healthcare are being rewritten — at the state level, the federal level, and at the point of care. This is where NYC's healthcare leaders sit down to discuss what's changing, what's working, and how we practice and shape the future of care delivery.</p>
+      <div class="hero-meta">
+        <div class="meta-item"><div class="meta-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div><div class="meta-label">Date</div><div class="meta-value">June 4, 2026</div></div></div>
+        <div class="meta-item"><div class="meta-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 2C7.6 2 4 5.4 4 9.5 4 14.3 12 22 12 22s8-7.7 8-12.5C20 5.4 16.4 2 12 2z"/></svg></div><div><div class="meta-label">Location</div><div class="meta-value">Brooklyn, New York</div></div></div>
+        <div class="meta-item"><div class="meta-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><div class="meta-label">Format</div><div class="meta-value">Fireside Chat + Networking</div></div></div>
+      </div>
+      <div class="hero-cta-row">
+        <a href="#rsvp" class="btn-primary">RSVP Now <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        <a href="#speakers" class="btn-ghost">Meet the Speakers</a>
+      </div>
+      <div class="featuring-bar">
+        <div class="featuring-label">Featuring Leaders From</div>
+        <div class="featuring-orgs">
+          <div class="featuring-org"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg> [Policy Group]</div>
+          <div class="featuring-org"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg> [Health System]</div>
+          <div class="featuring-org"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Stellar Health</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-card">
+      <img class="hero-card-img" src="https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=800&q=80&auto=format&fit=crop" alt="Brooklyn Bridge">
+      <div class="hero-card-body">
+        <div class="hero-card-label">The Experience</div>
+        <div class="hero-card-title">One night. Brooklyn. The conversation that matters.</div>
+        <div class="hero-card-desc">Step away from the grind and into a room full of NYC healthcare leaders who care deeply about where healthcare is headed. Providers, policy-makers, and front-line staff — in one room, discussing how we'll practice and shape the future of care delivery.</div>
+        <div class="tags"><span class="tag">Fireside Chat</span><span class="tag">Networking</span><span class="tag">Drinks &amp; Lite Bites</span><span class="tag">Brooklyn, NY</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-white">
+  <div class="section-white-inner">
+    <div class="section-label">Invite Only</div>
+    <h2 style="font-family:'Fraunces',serif;font-size:clamp(26px,3vw,38px);font-weight:500;color:var(--text-dark);max-width:550px;">Who's in the Room</h2>
+    <p style="font-size:15px;color:var(--text-body);font-weight:300;line-height:1.7;margin-top:10px;max-width:560px;">This is a curated, invite-only evening for the people shaping NYC healthcare. If you're on the front lines of care or policy, this room is built for you.</p>
+    <div class="audience-grid">
+      <div class="audience-card"><div class="audience-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><h3>Providers &amp; Practitioners</h3><p>Primary care physicians, specialists, and clinical leaders navigating the evolving landscape of care delivery.</p></div>
+      <div class="audience-card"><div class="audience-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><h3>Front-Line Staff</h3><p>Care coordinators, practice managers, and the teams delivering care at the point of care daily.</p></div>
+      <div class="audience-card"><div class="audience-icon"><svg viewBox="0 0 24 24"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg></div><h3>Policy-Makers</h3><p>Healthcare policy leaders and strategists driving Medicaid reform, CMS models, and state innovation.</p></div>
+      <div class="audience-card"><div class="audience-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div><h3>Public &amp; System Leaders</h3><p>Health system executives, public health officials, ACO operators, and network leaders shaping what's next.</p></div>
+    </div>
+  </div>
+</div>
+
+<section class="section" id="speakers">
+  <div class="speakers-header">
+    <div class="section-label" style="justify-content:center;">Your Hosts &amp; Panelist</div>
+    <h2>The Voices Shaping 2026</h2>
+    <p>Three leaders who live at the intersection of policy, technology, and clinical care — bringing distinct perspectives to one fireside conversation.</p>
+  </div>
+  <div class="speakers-grid">
+    <div class="speaker-card">
+      <div class="speaker-photo"><img src="https://stellarhealth.com/wp-content/uploads/2024/08/Alicia-Voorhees-600x530.png" alt="Alicia Voorhees" style="width:100%;height:100%;object-fit:cover;object-position:center top;"></div>
+      <div class="speaker-info"><div class="speaker-badge">Co-Host</div><div class="speaker-name">Alicia Voorhees</div><div class="speaker-title">VP, Network Strategy &amp; Growth<br><span class="speaker-org">Stellar Health</span></div></div>
+    </div>
+    <div class="speaker-card">
+      <div class="speaker-photo"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.15)" stroke-width="1.2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+      <div class="speaker-info"><div class="speaker-badge">Panelist</div></div>
+    </div>
+    <div class="speaker-card">
+      <div class="speaker-photo"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.15)" stroke-width="1.2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+      <div class="speaker-info"><div class="speaker-badge">Panelist</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="section-white">
+  <div class="section-white-inner">
+    <div class="convo-layout">
+      <div class="convo-left">
+        <div class="section-label">The Conversation</div>
+        <h2>Blueprint <em>for 2026</em></h2>
+        <p>As healthcare shifts from fee-for-service toward value-based models, the ground is moving fast — for providers, policymakers, and patients alike. Three leaders go candid on what's actually working, what's not, and what the path forward looks like.</p>
+      </div>
+      <div>
+        <div class="topic"><div class="topic-num">01</div><h4>The Breaking Point</h4><p>State mandates, federal shifts, and the clinical friction that's pushing the system to its limit. Where are we actually headed?</p></div>
+        <div class="topic"><div class="topic-num">02</div><h4>What's Actually Working</h4><p>Beyond the talking points — an honest look at what's delivering real results for providers and patients as the industry navigates the shift from FFS to value.</p></div>
+        <div class="topic"><div class="topic-num">03</div><h4>Shaping What Comes Next</h4><p>How leading teams are rethinking care delivery — aligning outcomes, sustainability, and a path forward that actually works.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="section" id="evening">
+  <div class="evening-header">
+    <div class="section-label" style="justify-content:center;">The Evening</div>
+    <h2>How the Night Unfolds</h2>
+  </div>
+  <div class="evening-items">
+    <div class="evening-item"><div class="evening-num">1</div><div class="evening-content"><h3>Fireside Chat</h3><p>An unscripted, candid conversation on the real state of healthcare in 2026 — the policy shifts, the operational pivots, and what's actually working on the ground. Come to listen. Come to contribute.</p></div></div>
+    <div class="evening-item"><div class="evening-num">2</div><div class="evening-content"><h3>Networking Over Drinks &amp; Lite Bites</h3><p>The best conversations happen after the fireside dims. Connect with a curated room of NYC healthcare professionals — from front-line providers and practice staff to policy-makers and health system leaders — over drinks and thoughtfully curated bites in an intimate Brooklyn setting.</p></div></div>
+  </div>
+</section>
+
+<section class="section-cta" id="rsvp">
+  <div class="cta-box">
+    <h2>Reserve Your Seat</h2>
+    <p>Space is limited to 60 guests. This is a curated, invite-only evening — RSVP now to secure your place before it fills.</p>
+    <a href="https://mail.google.com/mail/?view=cm&to=tess.hurst@stellarhealth.com&su=Stellar+Health%3A+NYC+Healthcare+Pivot+Event" target="_blank" class="btn-white">Request Your Invitation <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+    <div class="cta-info">
+      <div class="cta-info-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 2C7.6 2 4 5.4 4 9.5 4 14.3 12 22 12 22s8-7.7 8-12.5C20 5.4 16.4 2 12 2z"/></svg> Brooklyn, NY</div>
+      <div class="cta-info-item"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg> 60 Guests Max</div>
+      <div class="cta-info-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg> June 4, 2026</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-brand">Stellar Health</span>
+  <span class="footer-text">&copy; 2026 Stellar Health. All rights reserved.</span>
+  <div class="footer-links"><a href="#">Privacy</a><a href="https://stellarhealth.com">stellarhealth.com</a></div>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='translateY(0) translateX(0)'; }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.audience-card,.speaker-card,.topic,.evening-item').forEach((el,i) => {
+    el.style.opacity='0'; el.style.transform='translateY(20px)';
+    el.style.transition=`opacity 0.6s ease ${i*0.08}s, transform 0.6s ease ${i*0.08}s`;
+    obs.observe(el);
+  });
+</script>
+</body>
+</html>
